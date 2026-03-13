@@ -53,22 +53,18 @@ const random = medias[Math.floor(Math.random() * medias.length)];
 const container = document.getElementById("container");
 
 if (random.endsWith(".mp4")) {
-
-let video = document.createElement("video");
-video.src = random;
-video.autoplay = true;
-video.loop = true;
-video.playsInline = true;
-
-container.appendChild(video);
-
+  const video = document.createElement("video");
+  video.src = "medias/" + random; // chemin vers vos vidéos
+  video.autoplay = true;
+  video.loop = true;
+  video.playsInline = true;  // permet de rester dans la page
+  // Ne pas mettre muted = true
+  video.controls = true;     // ajoute un bouton play/pause pour que l'utilisateur puisse lancer le son
+  container.appendChild(video);
 } else {
-
-let img = document.createElement("img");
-img.src = random;
-
-container.appendChild(img);
-
+  const img = document.createElement("img");
+  img.src = "medias/" + random;
+  container.appendChild(img);
 }
 
 </script>
