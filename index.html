@@ -34,6 +34,7 @@ max-height:100%;
 
 <script>
 
+
 const medias = [
 "IMG_20191025_123432.jpg",
 "IMG_20191025_123435.jpg",
@@ -42,32 +43,28 @@ const medias = [
 ];
 
 
-const random = medias[Math.floor(Math.random()*medias.length)];
+const random = medias[Math.floor(Math.random() * medias.length)];
 
 const container = document.getElementById("container");
 
-if(random.endsWith(".mp4")){
+if (random.endsWith(".mp4")) {
 
-let video=document.createElement("video");
-video.src=random;
-video.autoplay=true;
-video.loop=true;
-video.muted=true;
-video.playsInline=true;
+let video = document.createElement("video");
+video.src = random;
+video.autoplay = true;
+video.loop = true;
+video.muted = true;
+video.playsInline = true;
 
 container.appendChild(video);
 
-}else{
+} else {
 
-let img=document.createElement("img");
-img.src=random;
+let img = document.createElement("img");
+img.src = random;
 
 container.appendChild(img);
 
 }
 
 </script>
-
-</body>
-
-</html>
