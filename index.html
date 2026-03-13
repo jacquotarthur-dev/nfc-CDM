@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>NFC Drop</title>
+
+<style>
+
+body{
+margin:0;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+img,video{
+max-width:100%;
+max-height:100%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="container"></div>
+
+<script>
+
+const medias = [
+"photo1.jpg",
+"photo2.jpg",
+"video1.mp4"
+];
+
+const random = medias[Math.floor(Math.random()*medias.length)];
+
+const container = document.getElementById("container");
+
+if(random.endsWith(".mp4")){
+
+let video=document.createElement("video");
+video.src=random;
+video.autoplay=true;
+video.loop=true;
+video.muted=true;
+video.playsInline=true;
+
+container.appendChild(video);
+
+}else{
+
+let img=document.createElement("img");
+img.src=random;
+
+container.appendChild(img);
+
+}
+
+</script>
+
+</body>
+
+</html>
