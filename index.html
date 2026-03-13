@@ -38,33 +38,36 @@ max-height:100%;
 <script>
 
 
+// Génération automatique de la liste des fichiers
 const medias = [];
 
+// 83 images
 for (let i = 1; i <= 83; i++) {
-medias.push(i + ".webp");
+  medias.push(i + ".webp");
 }
 
+// 20 vidéos
 for (let i = 1; i <= 31; i++) {
-medias.push(i + ".mp4");
+  medias.push(i + ".mp4");
 }
 
+// Choisir un média aléatoire
 const random = medias[Math.floor(Math.random() * medias.length)];
 
+// Récupérer le container (ex: <div id="container"></div>)
 const container = document.getElementById("container");
 
 if (random.endsWith(".mp4")) {
   const video = document.createElement("video");
-  video.src = "medias/" + random; // chemin vers vos vidéos
+  video.src = random;        // chemin directement à la racine
   video.autoplay = true;
   video.loop = true;
-  video.playsInline = true;  // permet de rester dans la page
-  // Ne pas mettre muted = true
-  video.controls = true;     // ajoute un bouton play/pause pour que l'utilisateur puisse lancer le son
+  video.playsInline = true;  // nécessaire pour mobile
+  video.controls = true;     // permet à l'utilisateur de lancer le son
   container.appendChild(video);
 } else {
   const img = document.createElement("img");
-  img.src = "medias/" + random;
+  img.src = random;          // chemin directement à la racine
   container.appendChild(img);
 }
-
 </script>
