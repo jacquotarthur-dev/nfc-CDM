@@ -38,36 +38,59 @@ max-height:100%;
 <script>
 
 
-// Génération automatique de la liste des fichiers
-const medias = [];
+// durée du cooldown (60 secondes)
+const cooldown = 60000;
 
+// récupérer le média et le temps stockés
+const savedMedia = localStorage.getItem("media");
+const savedTime = localStorage.getItem("media_time");
 
-for (let i = 1; i <= 195; i++) {
-  medias.push(i + ".webp");
+// fonction pour afficher un média
+function showMedia(file) {
+  const container = document.getElementById("container");
+
+  if (file.endsWith(".mp4")) {
+    const video = document.createElement("video");
+    video.src = file;
+    video.autoplay = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.controls = true;
+    container.appendChild(video);
+  } else {
+    const img = document.createElement("img");
+    img.src = file;
+    container.appendChild(img);
+  }
 }
 
+// vérifier si le cooldown est actif
+if (savedMedia && savedTime && (Date.now() - savedTime < cooldown)) {
 
-for (let i = 1; i <= 68; i++) {
-  medias.push(i + ".mp4");
-}
+  // afficher le même média
+  showMedia(savedMedia);
 
-// Choisir un média aléatoire
-const random = medias[Math.floor(Math.random() * medias.length)];
-
-// Récupérer le container (ex: <div id="container"></div>)
-const container = document.getElementById("container");
-
-if (random.endsWith(".mp4")) {
-  const video = document.createElement("video");
-  video.src = random;        // chemin directement à la racine
-  video.autoplay = true;
-  video.loop = true;
-  video.playsInline = true;  // nécessaire pour mobile
-  video.controls = true;     // permet à l'utilisateur de lancer le son
-  container.appendChild(video);
 } else {
-  const img = document.createElement("img");
-  img.src = random;          // chemin directement à la racine
-  container.appendChild(img);
+
+  // créer la liste des médias
+  const medias = [];
+
+  for (let i = 1; i <= 195; i++) {
+    medias.push(i + ".webp");
+  }
+
+  for (let i = 1; i <= 68; i++) {
+    medias.push(i + ".mp4");
+  }
+
+  // choisir un média aléatoire
+  const random = medias[Math.floor(Math.random() * medias.length)];
+
+  // sauvegarder dans le navigateur
+  localStorage.setItem("media", random);
+  localStorage.setItem("media_time", Date.now());
+
+  // afficher
+  showMedia(random);
 }
 </script>
