@@ -24,73 +24,158 @@ align-items:center;
 height:100vh;
 }
 
+<div id="container"></div>
+
+
 img,video{
 max-width:100%;
 max-height:100%;
+}
+
+/* supprimer tout scroll */
+html, body {
+margin:0;
+padding:0;
+overflow:hidden;
+height:100%;
+background:black;
+}
+
+/* container média plein écran */
+#container {
+width:100vw;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+#container img,
+#container video {
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+/* compteur */
+#cooldown{
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translateX(-50%);
+
+width:33vw;
+max-width:400px;
+
+text-align:center;
+
+padding:10px 20px;
+
+background:rgba(0,0,0,0.55);
+backdrop-filter:blur(6px);
+
+color:white;
+font-family:sans-serif;
+font-size:14px;
+
+border-radius:20px;
 }
 
 </style>
 
 <body>
 
+  <div id="cooldown">
+  Nouveau média dans <span id="timer">60</span>s
+</div>
+  
 <div id="container"></div>
 
 <script>
 
 
-// durée du cooldown (60 secondes)
 const cooldown = 60000;
 
-// récupérer le média et le temps stockés
 const savedMedia = localStorage.getItem("media");
 const savedTime = localStorage.getItem("media_time");
 
-// fonction pour afficher un média
-function showMedia(file) {
-  const container = document.getElementById("container");
+const container = document.getElementById("container");
+const timerElement = document.getElementById("timer");
 
-  if (file.endsWith(".mp4")) {
-    const video = document.createElement("video");
-    video.src = file;
-    video.autoplay = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.controls = true;
-    container.appendChild(video);
-  } else {
-    const img = document.createElement("img");
-    img.src = file;
-    container.appendChild(img);
-  }
+function showMedia(file){
+
+container.innerHTML="";
+
+if(file.endsWith(".mp4")){
+
+const video=document.createElement("video");
+video.src=file;
+video.autoplay=true;
+video.loop=true;
+video.playsInline=true;
+video.controls=true;
+
+container.appendChild(video);
+
+}else{
+
+const img=document.createElement("img");
+img.src=file;
+
+container.appendChild(img);
+
 }
 
-// vérifier si le cooldown est actif
-if (savedMedia && savedTime && (Date.now() - savedTime < cooldown)) {
+}
 
-  // afficher le même média
-  showMedia(savedMedia);
+function startTimer(startTime){
 
-} else {
+function update(){
 
-  // créer la liste des médias
-  const medias = [];
+const elapsed=Date.now()-startTime;
+const remaining=Math.max(0,Math.ceil((cooldown-elapsed)/1000));
 
-  for (let i = 1; i <= 195; i++) {
-    medias.push(i + ".webp");
-  }
+timerElement.textContent=remaining;
 
-  for (let i = 1; i <= 68; i++) {
-    medias.push(i + ".mp4");
-  }
+}
 
-  // choisir un média aléatoire
-  const random = medias[Math.floor(Math.random() * medias.length)];
+update();
 
-  // sauvegarder dans le navigateur
-  localStorage.setItem("media", random);
-  localStorage.setItem("media_time", Date.now());
+setInterval(update,1000);
 
-  // afficher
-  showMedia(random);
+}
+
+let mediaToShow;
+let startTime;
+
+if(savedMedia && savedTime && (Date.now()-savedTime < cooldown)){
+
+mediaToShow=savedMedia;
+startTime=parseInt(savedTime);
+
+}else{
+
+const medias=[];
+
+for(let i=1;i<=83;i++){
+medias.push(i+".webp");
+}
+
+for(let i=1;i<=20;i++){
+medias.push(i+".mp4");
+}
+
+mediaToShow=medias[Math.floor(Math.random()*medias.length)];
+
+startTime=Date.now();
+
+localStorage.setItem("media",mediaToShow);
+localStorage.setItem("media_time",startTime);
+
+}
+
+showMedia(mediaToShow);
+startTimer(startTime);
+
 }
 </script>
